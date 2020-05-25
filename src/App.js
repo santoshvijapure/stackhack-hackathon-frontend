@@ -1,11 +1,11 @@
 import React from 'react';
 import './App.css';
-import Todo from './components/Todo';
+import TodoTable from './components/MaterialTable';
 
 function App() {
 	return (
 		<div className="App">
-			<Todo />
+			<TodoTable />
 		</div>
 	);
 }
