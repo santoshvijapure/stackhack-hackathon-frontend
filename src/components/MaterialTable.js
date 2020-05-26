@@ -39,7 +39,6 @@ const tableIcons = {
 
 export default function TodoTable() {
 	const [ state, setState ] = useState([]);
-	const [ helper, setHelper ] = useState(1);
 	useEffect(() => {
 		axios
 			.get('https://to-do-stackhack.herokuapp.com/api/v1/todo/')
@@ -80,6 +79,7 @@ export default function TodoTable() {
 				SHOPPING: 'SHOPPING',
 				OTHER: 'OTHER'
 			},
+
 			cellStyle: { width: '5%' }
 		},
 		{
@@ -89,6 +89,7 @@ export default function TodoTable() {
 				true: 'true',
 				false: 'false'
 			},
+			hidden: true,
 			cellStyle: { width: '5%' }
 		},
 		{
@@ -138,16 +139,11 @@ export default function TodoTable() {
 									priority: newData.priority,
 									isImportent: newData.isImportent
 								})
-								.then((res) => console.log(res))
+								.then((res) => {
+									console.log(res);
+									update();
+								})
 								.catch((e) => console.log(e));
-
-							// if (oldData) {
-							// 	setState((prevState) => {
-							// 		const data = [ ...prevState.data ];
-							// 		data[data.indexOf(oldData)] = newData;
-							// 		return { ...prevState, data };
-							// 	});
-							// }
 						}, 600);
 					}),
 				onRowDelete: (oldData) =>
@@ -156,13 +152,11 @@ export default function TodoTable() {
 							resolve();
 							axios
 								.delete(`https://to-do-stackhack.herokuapp.com/api/v1/todo/${oldData._id}`)
-								.then((data) => console.log(data))
+								.then((data) => {
+									console.log(data);
+									update();
+								})
 								.catch((e) => console.log(e));
-							// setState((prevState) => {
-							// 	const data = [ ...prevState.data ];
-							// 	data.splice(data.indexOf(oldData), 1);
-							// 	return { ...prevState, data };
-							// });
 						}, 600);
 					})
 			}}
