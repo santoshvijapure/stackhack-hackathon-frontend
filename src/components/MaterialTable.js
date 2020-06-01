@@ -2,12 +2,18 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import MaterialTable from 'material-table';
 import columns from './helper/columns';
-// import tableIcons from './helper/tableIcons';
 export default function TodoTable() {
 	const [ state, setState ] = useState([]);
+
+	let token = window.localStorage.getItem('token');
+	let user = window.localStorage.getItem('user');
+
+	const config = {
+		headers: { Authorization: `Bearer ${token}` }
+	};
 	useEffect(() => {
 		axios
-			.get('https://to-do-stackhack.herokuapp.com/api/v1/todo/')
+			.get('https://to-do-stackhack.herokuapp.com/api/v1/todo', config)
 			.then((data) => {
 				console.log(data.data.data);
 				setState(data.data.data);
@@ -20,7 +26,7 @@ export default function TodoTable() {
 	const update = () => {
 		// debugger;
 		axios
-			.get('https://to-do-stackhack.herokuapp.com/api/v1/todo/')
+			.get('https://to-do-stackhack.herokuapp.com/api/v1/todo/', config)
 			.then((data) => {
 				console.log(data.data.data);
 				setState(data.data.data);
@@ -33,22 +39,21 @@ export default function TodoTable() {
 	return (
 		<MaterialTable
 			title="ToDo"
-			// icons={tableIcons}
 			columns={columns}
 			data={state}
-			// options={{ actionsColumnIndex: -1 }}
 			editable={{
 				onRowAdd: (newData) =>
 					new Promise((resolve) => {
 						setTimeout(() => {
+							newData = { ...newData, user: user };
 							axios
-								.post('https://to-do-stackhack.herokuapp.com/api/v1/todo/', newData)
+								.post('https://to-do-stackhack.herokuapp.com/api/v1/todo/', newData, config)
 								.then((res) => {
 									console.log(res);
 									update();
+									resolve();
 								})
 								.catch((e) => console.log(e));
-							resolve();
 						}, 1000);
 					}),
 				onRowUpdate: (newData, oldData) =>
@@ -57,13 +62,19 @@ export default function TodoTable() {
 							resolve();
 							console.log(oldData);
 							console.log(newData);
+							oldData = { ...oldData, user: user };
+							
 							axios
-								.patch(`https://to-do-stackhack.herokuapp.com/api/v1/todo/${oldData._id}`, {
-									task: newData.task,
-									label: newData.label,
-									priority: newData.priority,
-									isImportent: newData.isImportent
-								})
+								.patch(
+									`https://to-do-stackhack.herokuapp.com/api/v1/todo/${oldData._id}`,
+									{
+										task: newData.task,
+										label: newData.label,
+										priority: newData.priority,
+										isImportent: newData.isImportent
+									},
+									config
+								)
 								.then((res) => {
 									console.log(res);
 									update();
@@ -76,7 +87,7 @@ export default function TodoTable() {
 						setTimeout(() => {
 							resolve();
 							axios
-								.delete(`https://to-do-stackhack.herokuapp.com/api/v1/todo/${oldData._id}`)
+								.delete(`https://to-do-stackhack.herokuapp.com/api/v1/todo/${oldData._id}`, config)
 								.then((data) => {
 									console.log(data);
 									update();

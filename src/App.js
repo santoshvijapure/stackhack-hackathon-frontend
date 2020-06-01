@@ -1,13 +1,8 @@
 import React from 'react';
 import './App.css';
-import TodoTable from './components/MaterialTable';
-
+import LandingPage from './components/LandingPage';
 function App() {
-	return (
-		<div className="App">
-			<TodoTable />
-		</div>
-	);
+	return <LandingPage />;
 }
 
 export default App;
