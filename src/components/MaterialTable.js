@@ -41,6 +41,7 @@ export default function TodoTable() {
 
 	return (
 		<div>
+		
 			<div className={classes.root}>{isLoading ? <LinearProgress color="secondary" /> : null}</div>
 
 			<MaterialTable
