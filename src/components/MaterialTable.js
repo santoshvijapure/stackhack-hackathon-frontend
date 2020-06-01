@@ -4,7 +4,10 @@ import MaterialTable from 'material-table';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import { useLoadingStyle } from './helper/styles';
 import columns from './helper/columns';
+import { useSnackbar } from 'notistack';
+
 export default function TodoTable() {
+	const { enqueueSnackbar } = useSnackbar();
 	const classes = useLoadingStyle();
 	const [ state, setState ] = useState([]);
 	const [ isLoading, setisLoading ] = useState(true);
@@ -41,7 +44,6 @@ export default function TodoTable() {
 
 	return (
 		<div>
-		
 			<div className={classes.root}>{isLoading ? <LinearProgress color="secondary" /> : null}</div>
 
 			<MaterialTable
@@ -56,21 +58,25 @@ export default function TodoTable() {
 								axios
 									.post('https://to-do-stackhack.herokuapp.com/api/v1/todo/', newData, config)
 									.then((res) => {
-										console.log(res);
 										update();
+										enqueueSnackbar(`"${res.data.data.task}" added to todo list `, {
+											variant: 'success'
+										});
+
 										resolve();
 									})
-									.catch((e) => console.log(e));
+									.catch((e) => {
+										enqueueSnackbar('Task cannot be empty ', {
+											variant: 'error'
+										});
+										console.log(e);
+										resolve();
+									});
 							}, 1000);
 						}),
 					onRowUpdate: (newData, oldData) =>
 						new Promise((resolve) => {
 							setTimeout(() => {
-								resolve();
-								console.log(oldData);
-								console.log(newData);
-								oldData = { ...oldData, user: user };
-
 								axios
 									.patch(
 										`https://to-do-stackhack.herokuapp.com/api/v1/todo/${oldData._id}`,
@@ -85,6 +91,10 @@ export default function TodoTable() {
 									.then((res) => {
 										console.log(res);
 										update();
+										enqueueSnackbar(' todo updated successfully!', {
+											variant: 'info'
+										});
+										resolve();
 									})
 									.catch((e) => console.log(e));
 							}, 1000);
@@ -92,12 +102,15 @@ export default function TodoTable() {
 					onRowDelete: (oldData) =>
 						new Promise((resolve) => {
 							setTimeout(() => {
-								resolve();
 								axios
 									.delete(`https://to-do-stackhack.herokuapp.com/api/v1/todo/${oldData._id}`, config)
 									.then((data) => {
 										console.log(data);
 										update();
+										enqueueSnackbar(`"${data.data.data.task}" is deleted `, {
+											variant: 'default'
+										});
+										resolve();
 									})
 									.catch((e) => console.log(e));
 							}, 1000);
