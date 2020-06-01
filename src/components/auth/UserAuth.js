@@ -1,21 +1,38 @@
 import React, { useState } from 'react';
 import Paper from '@material-ui/core/Paper';
+
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
+import TabPanel from './TabPanel';
+
+import { TextField, Button, Container } from '@material-ui/core';
 import PersonAddIcon from '@material-ui/icons/PersonAdd';
 import PersonIcon from '@material-ui/icons/Person';
-import TabPanel from './TabPanel';
-import { TextField, Button, Container } from '@material-ui/core';
-import axios from 'axios';
+
+import LinearProgress from '@material-ui/core/LinearProgress';
+
+import { useLoadingStyle } from '../helper/styles';
 import { useAuthStyles } from '../helper/styles';
 
+import { useSnackbar } from 'notistack';
+
+import axios from 'axios';
+
 export default function IconLabelTabs({ setisLoggedIn }) {
+	const loaderClasses = useLoadingStyle();
+	const [ isLoading, setisLoading ] = useState(false);
+
+	const { enqueueSnackbar } = useSnackbar();
+
 	const classes = useAuthStyles();
+
 	const [ value, setValue ] = React.useState(0);
+
 	const [ state, setState ] = useState({
 		email: '',
 		password: ''
 	});
+
 	const handleChange = (event, newValue) => {
 		setValue(newValue);
 	};
@@ -24,7 +41,7 @@ export default function IconLabelTabs({ setisLoggedIn }) {
 	};
 	const signIn = (e) => {
 		e.preventDefault();
-
+		setisLoading(true);
 		let url = 'https://to-do-stackhack.herokuapp.com/api/v1/auth/signin';
 		console.log('initiated', state);
 		axios
@@ -35,11 +52,23 @@ export default function IconLabelTabs({ setisLoggedIn }) {
 			.then(({ data }) => {
 				window.localStorage.setItem('token', data.data.token);
 				window.localStorage.setItem('user', data.data.user);
+				setisLoading(false);
+				enqueueSnackbar('User LoggedIn  successfully!', {
+					variant: 'success'
+				});
 				setisLoggedIn(true);
+			})
+			.catch((e) => {
+				setisLoading(false);
+				enqueueSnackbar('Email or password is wrong', {
+					variant: 'error'
+				});
 			});
 	};
 	const signUp = (e) => {
 		e.preventDefault();
+		setisLoading(true);
+
 		let url = 'https://to-do-stackhack.herokuapp.com/api/v1/auth/signup';
 		axios
 			.post(url, {
@@ -48,6 +77,15 @@ export default function IconLabelTabs({ setisLoggedIn }) {
 			})
 			.then((user) => {
 				console.log(user);
+				enqueueSnackbar('User created successfully!', {
+					variant: 'success'
+				});
+				setisLoading(false);
+				setValue(0);
+			})
+			.catch((e) => {
+				console.log(e);
+				setisLoading(false);
 			});
 	};
 
@@ -65,6 +103,7 @@ export default function IconLabelTabs({ setisLoggedIn }) {
 					<Tab icon={<PersonIcon />} label="SIGN IN" />
 					<Tab icon={<PersonAddIcon />} label="SIGN UP" />
 				</Tabs>
+
 				<TabPanel value={value} index={0}>
 					<form onSubmit={(e) => signIn(e)}>
 						<TextField
@@ -76,6 +115,7 @@ export default function IconLabelTabs({ setisLoggedIn }) {
 							fullWidth={true}
 							type="email"
 							onChange={handleChangeForm}
+							required={true}
 						/>
 						<br />
 						<TextField
@@ -87,6 +127,7 @@ export default function IconLabelTabs({ setisLoggedIn }) {
 							fullWidth={true}
 							type="password"
 							onChange={handleChangeForm}
+							required={true}
 						/>
 						<Button variant="contained" type="submit" fullWidth={true} color="primary">
 							Sign In
@@ -104,6 +145,7 @@ export default function IconLabelTabs({ setisLoggedIn }) {
 							fullWidth={true}
 							type="email"
 							onChange={handleChangeForm}
+							required={true}
 						/>
 						<br />
 						<TextField
@@ -115,12 +157,15 @@ export default function IconLabelTabs({ setisLoggedIn }) {
 							fullWidth={true}
 							type="password"
 							onChange={handleChangeForm}
+							required={true}
 						/>
 						<Button variant="contained" type="submit" fullWidth={true} color="primary">
 							Sign Up
 						</Button>
 					</form>
 				</TabPanel>
+				{/* progress bar */}
+				<div className={loaderClasses.root}>{isLoading ? <LinearProgress color="secondary" /> : null}</div>
 			</Paper>
 		</Container>
 	);

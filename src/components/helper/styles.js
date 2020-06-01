@@ -20,3 +20,12 @@ export const useAuthStyles = makeStyles({
 		padding: 10
 	}
 });
+
+export const useLoadingStyle = makeStyles((theme) => ({
+	root: {
+		width: '100%',
+		'& > * + *': {
+			marginTop: theme.spacing(2)
+		}
+	}
+}));
