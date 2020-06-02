@@ -81,7 +81,7 @@ export default function IconLabelTabs({ setisLoggedIn }) {
 					variant: 'success'
 				});
 				setisLoading(false);
-				// setValue(0);
+				setValue(0);
 			})
 			.catch((e) => {
 				console.log(e);

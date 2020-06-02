@@ -47,7 +47,7 @@ export default function TodoTable() {
 			<div className={classes.root}>{isLoading ? <LinearProgress color="secondary" /> : null}</div>
 
 			<MaterialTable
-				title="ToDo"
+				title=" "
 				columns={columns}
 				data={state}
 				editable={{

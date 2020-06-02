@@ -9,12 +9,17 @@ import { isLogged, handleLogOut } from './helper/auth';
 import { useLandingStyles, useBackDropStyles } from './helper/styles';
 import Backdrop from '@material-ui/core/Backdrop';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import Tooltip from '@material-ui/core/Tooltip';
+import Brightness7Icon from '@material-ui/icons/Brightness7';
+import Brightness4Icon from '@material-ui/icons/Brightness4';
+import { useSnackbar } from 'notistack';
 
-export default function ButtonAppBar() {
+export default function ButtonAppBar({ onToggleDark }) {
 	const [ isLoggedIn, setisLoggedIn ] = useState(false);
 	const classes = useLandingStyles();
 	const backDropClasses = useBackDropStyles();
 	const [ open, setOpen ] = React.useState(true);
+	const { enqueueSnackbar } = useSnackbar();
 
 	useEffect(() => {
 		setisLoggedIn(isLogged);
@@ -25,8 +30,11 @@ export default function ButtonAppBar() {
 
 	const handleClick = () => {
 		if (isLoggedIn) {
-			setOpen(true)
+			setOpen(true);
 			setisLoggedIn(handleLogOut());
+			enqueueSnackbar('User Logged out successfully!', {
+				variant: 'success'
+			});
 			setTimeout(() => {
 				setOpen(false);
 			}, 1000);
@@ -44,6 +52,15 @@ export default function ButtonAppBar() {
 						<Typography variant="h6" className={classes.title}>
 							TO-DO
 						</Typography>
+						<Tooltip title="Toggle dark mode" arrow>
+							<Button
+								onClick={() => {
+									onToggleDark();
+								}}
+							>
+								<Brightness4Icon />
+							</Button>
+						</Tooltip>
 						<Button
 							onClick={() => {
 								handleClick();
