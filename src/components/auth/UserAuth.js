@@ -53,7 +53,7 @@ export default function IconLabelTabs({ setisLoggedIn }) {
 				window.localStorage.setItem('token', data.data.token);
 				window.localStorage.setItem('user', data.data.user);
 				setisLoading(false);
-				enqueueSnackbar('User LoggedIn  successfully!', {
+				enqueueSnackbar('User Logged in successfully!', {
 					variant: 'success'
 				});
 				setisLoggedIn(true);

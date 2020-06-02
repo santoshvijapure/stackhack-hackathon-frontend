@@ -29,3 +29,10 @@ export const useLoadingStyle = makeStyles((theme) => ({
 		}
 	}
 }));
+
+export const useBackDropStyles = makeStyles((theme) => ({
+	backdrop: {
+		zIndex: theme.zIndex.drawer + 1,
+		color: '#fff'
+	}
+}));

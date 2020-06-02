@@ -6,23 +6,38 @@ import Button from '@material-ui/core/Button';
 import TodoTable from './MaterialTable';
 import UserAuth from './auth/UserAuth';
 import { isLogged, handleLogOut } from './helper/auth';
-import { useLandingStyles } from './helper/styles';
+import { useLandingStyles, useBackDropStyles } from './helper/styles';
+import Backdrop from '@material-ui/core/Backdrop';
+import CircularProgress from '@material-ui/core/CircularProgress';
+
 export default function ButtonAppBar() {
 	const [ isLoggedIn, setisLoggedIn ] = useState(false);
 	const classes = useLandingStyles();
+	const backDropClasses = useBackDropStyles();
+	const [ open, setOpen ] = React.useState(true);
 
 	useEffect(() => {
 		setisLoggedIn(isLogged);
+		setTimeout(() => {
+			setOpen(false);
+		}, 1000);
 	}, []);
 
 	const handleClick = () => {
 		if (isLoggedIn) {
+			setOpen(true)
 			setisLoggedIn(handleLogOut());
+			setTimeout(() => {
+				setOpen(false);
+			}, 1000);
 		}
 	};
 
 	return (
 		<div>
+			<Backdrop className={backDropClasses.backdrop} open={open}>
+				<CircularProgress color="inherit" />
+			</Backdrop>
 			<div className={classes.root}>
 				<AppBar position="static">
 					<Toolbar>
