@@ -6,17 +6,21 @@ import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import { Paper } from '@material-ui/core';
 
 function App() {
+	const userTheme = window.localStorage.getItem('userTheme');
 	// We keep the theme in app state
 	const [ theme, setTheme ] = useState({
 		palette: {
-			type: 'light'
+			type: userTheme ? userTheme : 'light'
 		}
 	});
 
 	// we change the palette type of the theme in state
 	const toggleDarkTheme = () => {
 		let newPaletteType = theme.palette.type === 'light' ? 'dark' : 'light';
+		window.localStorage.setItem('userTheme', newPaletteType);
+
 		setTheme({
+			...theme,
 			palette: {
 				type: newPaletteType
 			}

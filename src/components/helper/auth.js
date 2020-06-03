@@ -6,6 +6,7 @@ export const isLogged = () => {
 
 // handle logout and clear the localstorage
 export const handleLogOut = () => {
-	localStorage.clear();
+	window.localStorage.removeItem('token');
+	window.localStorage.removeItem('user');
 	return false;
 };
