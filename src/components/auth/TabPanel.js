@@ -1,7 +1,5 @@
 import React from 'react';
-export default function TabPanel(props) {
-	const { children, value, index, ...other } = props;
-
+export default function TabPanel({ children, value, index, ...other }) {
 	return (
 		<div
 			role="tabpanel"
@@ -10,7 +8,7 @@ export default function TabPanel(props) {
 			aria-labelledby={`simple-tab-${index}`}
 			{...other}
 		>
-			{value === index && <>{children}</>}
+			{value === index && <div>{children}</div>}
 		</div>
 	);
 }

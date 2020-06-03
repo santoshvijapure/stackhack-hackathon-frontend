@@ -1,16 +1,23 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import MaterialTable from 'material-table';
-import LinearProgress from '@material-ui/core/LinearProgress';
-import { useLoadingStyle } from './helper/styles';
-import columns from './helper/columns';
-import { useSnackbar } from 'notistack';
 
+import axios from 'axios';
+//material table
+import MaterialTable from 'material-table';
+import { LinearProgress } from '@material-ui/core';
+import { useSnackbar } from 'notistack';
+import { useLoadingStyle } from './helper/styles';
+// column object for table columns
+import columns from './helper/columns';
 export default function TodoTable() {
-	const { enqueueSnackbar } = useSnackbar();
+	// styles
 	const classes = useLoadingStyle();
+	// snackbar
+	const { enqueueSnackbar } = useSnackbar();
+	// state to store table data i.e. Todos
 	const [ state, setState ] = useState([]);
+	// to set the loader animation if the data is being loaded
 	const [ isLoading, setisLoading ] = useState(true);
+	// token and user from localstorange for API calls
 	let token = window.localStorage.getItem('token');
 	let user = window.localStorage.getItem('user');
 	const config = {
@@ -20,7 +27,6 @@ export default function TodoTable() {
 		axios
 			.get('https://to-do-stackhack.herokuapp.com/api/v1/todo', config)
 			.then((data) => {
-				console.log(data.data.data);
 				setState(data.data.data);
 				setisLoading(false);
 			})
@@ -28,13 +34,12 @@ export default function TodoTable() {
 				console.log(e);
 			});
 	}, []);
-
+	// update the changes to table
 	const update = () => {
 		// debugger;
 		axios
 			.get('https://to-do-stackhack.herokuapp.com/api/v1/todo/', config)
 			.then((data) => {
-				console.log(data.data.data);
 				setState(data.data.data);
 			})
 			.catch((e) => {
@@ -89,7 +94,6 @@ export default function TodoTable() {
 										config
 									)
 									.then((res) => {
-										console.log(res);
 										update();
 										enqueueSnackbar(' todo updated successfully!', {
 											variant: 'info'
@@ -105,7 +109,6 @@ export default function TodoTable() {
 								axios
 									.delete(`https://to-do-stackhack.herokuapp.com/api/v1/todo/${oldData._id}`, config)
 									.then((data) => {
-										console.log(data);
 										update();
 										enqueueSnackbar(`"${data.data.data.task}" is deleted `, {
 											variant: 'default'

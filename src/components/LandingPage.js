@@ -1,33 +1,35 @@
 import React, { useState, useEffect } from 'react';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
+//material components
+import { AppBar, Toolbar, Typography, Button, Backdrop, CircularProgress, Tooltip } from '@material-ui/core';
+import Brightness4Icon from '@material-ui/icons/Brightness4';
+// Main todo table
 import TodoTable from './MaterialTable';
+//UserAuth Component
 import UserAuth from './auth/UserAuth';
 import { isLogged, handleLogOut } from './helper/auth';
+//style
 import { useLandingStyles, useBackDropStyles } from './helper/styles';
-import Backdrop from '@material-ui/core/Backdrop';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import Tooltip from '@material-ui/core/Tooltip';
-import Brightness7Icon from '@material-ui/icons/Brightness7';
-import Brightness4Icon from '@material-ui/icons/Brightness4';
+//snackbar Lib
 import { useSnackbar } from 'notistack';
 
 export default function ButtonAppBar({ onToggleDark }) {
-	const [ isLoggedIn, setisLoggedIn ] = useState(false);
+	//styles
 	const classes = useLandingStyles();
 	const backDropClasses = useBackDropStyles();
-	const [ open, setOpen ] = React.useState(true);
-	const { enqueueSnackbar } = useSnackbar();
+	//userState
+	const [ isLoggedIn, setisLoggedIn ] = useState(false);
 
+	// to set BackDrop open or Close
+	const [ open, setOpen ] = useState(true);
+	//snackbar
+	const { enqueueSnackbar } = useSnackbar();
 	useEffect(() => {
 		setisLoggedIn(isLogged);
 		setTimeout(() => {
 			setOpen(false);
 		}, 1000);
 	}, []);
-
+	// handle LogOut
 	const handleClick = () => {
 		if (isLoggedIn) {
 			setOpen(true);

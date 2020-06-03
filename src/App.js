@@ -9,7 +9,7 @@ function App() {
 	// We keep the theme in app state
 	const [ theme, setTheme ] = useState({
 		palette: {
-			type: 'dark'
+			type: 'light'
 		}
 	});
 

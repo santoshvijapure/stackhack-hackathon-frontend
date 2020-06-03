@@ -1,49 +1,44 @@
 import React, { useState } from 'react';
-import Paper from '@material-ui/core/Paper';
-
-import Tabs from '@material-ui/core/Tabs';
-import Tab from '@material-ui/core/Tab';
-import TabPanel from './TabPanel';
-
-import { TextField, Button, Container } from '@material-ui/core';
-import PersonAddIcon from '@material-ui/icons/PersonAdd';
-import PersonIcon from '@material-ui/icons/Person';
-
-import LinearProgress from '@material-ui/core/LinearProgress';
-
-import { useLoadingStyle } from '../helper/styles';
-import { useAuthStyles } from '../helper/styles';
-
-import { useSnackbar } from 'notistack';
 
 import axios from 'axios';
+//material components
+import { TextField, Button, Container, LinearProgress, Tabs, Tab, Paper } from '@material-ui/core';
+//material Icons
+import PersonAddIcon from '@material-ui/icons/PersonAdd';
+import PersonIcon from '@material-ui/icons/Person';
+// snackbar lib
+import { useSnackbar } from 'notistack';
+import TabPanel from './TabPanel';
+import { useAuthStyles, useLoadingStyle } from '../helper/styles';
 
 export default function IconLabelTabs({ setisLoggedIn }) {
-	const loaderClasses = useLoadingStyle();
-	const [ isLoading, setisLoading ] = useState(false);
-
-	const { enqueueSnackbar } = useSnackbar();
-
+	//styles
 	const classes = useAuthStyles();
-
-	const [ value, setValue ] = React.useState(0);
-
+	const loaderClasses = useLoadingStyle();
+	// to show the loader while loading
+	const [ isLoading, setisLoading ] = useState(false);
+	//to show the snackbar
+	const { enqueueSnackbar } = useSnackbar();
+	// to detect the change in tabs (signIn/Signup)
+	const [ value, setValue ] = useState(0);
+	//to store the email and password
 	const [ state, setState ] = useState({
 		email: '',
 		password: ''
 	});
-
+	//change the tab from signup/signin to signin/signup
 	const handleChange = (event, newValue) => {
 		setValue(newValue);
 	};
+	//to store change in email id or password
 	const handleChangeForm = (e) => {
 		setState({ ...state, [e.target.name]: e.target.value });
 	};
+	//Handle sign in
 	const signIn = (e) => {
 		e.preventDefault();
 		setisLoading(true);
 		let url = 'https://to-do-stackhack.herokuapp.com/api/v1/auth/signin';
-		console.log('initiated', state);
 		axios
 			.post(url, {
 				email: state.email,
@@ -65,6 +60,7 @@ export default function IconLabelTabs({ setisLoggedIn }) {
 				});
 			});
 	};
+	//handle Sign Up
 	const signUp = (e) => {
 		e.preventDefault();
 		setisLoading(true);
@@ -76,7 +72,6 @@ export default function IconLabelTabs({ setisLoggedIn }) {
 				password: state.password
 			})
 			.then((user) => {
-				console.log(user);
 				enqueueSnackbar('User created successfully!', {
 					variant: 'success'
 				});
