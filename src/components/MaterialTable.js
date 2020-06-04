@@ -20,12 +20,12 @@ export default function TodoTable() {
 	// token and user from localstorange for API calls
 	let token = window.localStorage.getItem('token');
 	let user = window.localStorage.getItem('user');
-	const config = {
+	const headerConfig = {
 		headers: { Authorization: `Bearer ${token}` }
 	};
 	useEffect(() => {
 		axios
-			.get('https://to-do-stackhack.herokuapp.com/api/v1/todo', config)
+			.get('https://to-do-stackhack.herokuapp.com/api/v1/todo', headerConfig)
 			.then((data) => {
 				setState(data.data.data);
 				setisLoading(false);
@@ -38,7 +38,7 @@ export default function TodoTable() {
 	const update = () => {
 		// debugger;
 		axios
-			.get('https://to-do-stackhack.herokuapp.com/api/v1/todo/', config)
+			.get('https://to-do-stackhack.herokuapp.com/api/v1/todo/', headerConfig)
 			.then((data) => {
 				setState(data.data.data);
 			})
@@ -61,7 +61,7 @@ export default function TodoTable() {
 							setTimeout(() => {
 								newData = { ...newData, user: user };
 								axios
-									.post('https://to-do-stackhack.herokuapp.com/api/v1/todo/', newData, config)
+									.post('https://to-do-stackhack.herokuapp.com/api/v1/todo/', newData, headerConfig)
 									.then((res) => {
 										update();
 										enqueueSnackbar(`"${res.data.data.task}" added to todo list `, {
@@ -91,7 +91,7 @@ export default function TodoTable() {
 											priority: newData.priority,
 											isImportent: newData.isImportent
 										},
-										config
+										headerConfig
 									)
 									.then((res) => {
 										update();
@@ -107,7 +107,10 @@ export default function TodoTable() {
 						new Promise((resolve) => {
 							setTimeout(() => {
 								axios
-									.delete(`https://to-do-stackhack.herokuapp.com/api/v1/todo/${oldData._id}`, config)
+									.delete(
+										`https://to-do-stackhack.herokuapp.com/api/v1/todo/${oldData._id}`,
+										headerConfig
+									)
 									.then((data) => {
 										update();
 										enqueueSnackbar(`"${data.data.data.task}" is deleted `, {

@@ -1,3 +1,29 @@
 body {
 	margin: 0;
 }
+
+.landing {
+	min-height: 85vh;
+}
+.footer {
+	padding: 1.5em;
+	background-color: black;
+	justify-content: center;
+}
+.center {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+hr {
+	max-width: 40%;
+	opacity: .5;
+}
+
+a {
+	color: #000;
+}
+
+a:hover {
+	color: blue;
+}

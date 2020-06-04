@@ -31,7 +31,7 @@ const columns = [
 		title: 'priority',
 		field: 'priority',
 		type: 'numeric',
-		lookup: { 1: 1, 2: 2, 3: 3, 4: 4, 5: 5 },
+		lookup: { 1: 1, 2: 2, 3: 3 },
 		cellStyle: { width: '5%' }
 	},
 	{

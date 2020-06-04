@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import './App.css';
 import LandingPage from './components/LandingPage';
+import Footer from './components/Footer';
 import { SnackbarProvider } from 'notistack';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import { Paper } from '@material-ui/core';
@@ -35,6 +36,7 @@ function App() {
 			<SnackbarProvider maxSnack={3}>
 				<Paper style={{ height: '100vh' }}>
 					<LandingPage onToggleDark={toggleDarkTheme} />
+					<Footer />
 				</Paper>
 			</SnackbarProvider>
 		</MuiThemeProvider>

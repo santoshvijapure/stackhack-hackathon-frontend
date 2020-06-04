@@ -44,7 +44,7 @@ export default function ButtonAppBar({ onToggleDark }) {
 	};
 
 	return (
-		<div>
+		<div className="landing">
 			<Backdrop className={backDropClasses.backdrop} open={open}>
 				<CircularProgress color="inherit" />
 			</Backdrop>

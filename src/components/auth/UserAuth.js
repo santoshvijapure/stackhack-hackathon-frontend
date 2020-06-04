@@ -9,6 +9,7 @@ import PersonIcon from '@material-ui/icons/Person';
 // snackbar lib
 import { useSnackbar } from 'notistack';
 import TabPanel from './TabPanel';
+
 import { useAuthStyles, useLoadingStyle } from '../helper/styles';
 
 export default function IconLabelTabs({ setisLoggedIn }) {
