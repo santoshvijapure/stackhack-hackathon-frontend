@@ -1,4 +1,6 @@
-![](public/lines.svg)
+<img src="/public/lines.svg" alt="Kitten"
+	title="A cute kitten" width="150" height="100" />
+
 
 # TODO : A simple tool for time management [Frontend](https://github.com/santoshvijapure/stackhack-hackathon-frontend) | [API](https://github.com/pprathameshmore/stackhack-hackathon-backend/)
 
