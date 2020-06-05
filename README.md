@@ -4,8 +4,6 @@
 
 # TODO : A simple tool for time management [Frontend](https://github.com/santoshvijapure/stackhack-hackathon-frontend) | [API](https://github.com/pprathameshmore/stackhack-hackathon-backend/)
 
-### simple and powerful link management tool
-
 ![](screnshots/s1.png)
 ![](screnshots/s2.png)
 
